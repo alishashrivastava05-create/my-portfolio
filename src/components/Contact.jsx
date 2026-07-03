@@ -36,7 +36,7 @@ function Contact() {
     e.preventDefault()
     if (!validate()) return
     setLoading(true)
-    axios.post('http://localhost:5001/send-email', formData)
+    axios.post('https://my-portfolio-backend-b4d1.onrender.com/send-email', formData)
       .then(() => {
         Swal.fire({
           title: 'Message Sent! 💖',
