@@ -20,7 +20,7 @@ function Hero() {
           Motivated and enthusiastic fresher seeking an opportunity to begin a professional career where I can utilize my skills, contribute to organizational growth, and continuously enhance my abilities.
         </p>
         <div className="hero-btns">
-          <a href="mailto:alishashrivastava05@gmail.com" className="btn-primary">Hire Me</a>
+          <a href="/Alisha_Resume_Professional.pdf" download="Alisha_Resume_Professional" className="btn-primary">Hire Me</a>
           <button className="btn-outline" onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>
             View Work
           </button>
