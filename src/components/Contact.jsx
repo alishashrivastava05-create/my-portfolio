@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import './Contact.css'
+
+const ACCESS_KEY = '2f4aa117-b279-40fd-bc77-f104f1dfb51b'
 
 function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
@@ -32,12 +33,19 @@ function Contact() {
     return Object.keys(temp).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validate()) return
     setLoading(true)
-    axios.post('https://my-portfolio-backend-b4d1.onrender.com/send-email', formData)
-      .then(() => {
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ access_key: ACCESS_KEY, ...formData }),
+      })
+      const data = await res.json()
+      if (data.success) {
         Swal.fire({
           title: 'Message Sent! 💖',
           text: "Thanks for reaching out! Alisha will get back to you soon.",
@@ -49,17 +57,20 @@ function Contact() {
           setErrors({})
           localStorage.removeItem('alisha_contact_form')
         })
+      } else {
+        throw new Error('Failed')
+      }
+    } catch {
+      Swal.fire({
+        title: 'Oops!',
+        text: 'Something went wrong. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#e91e8c',
       })
-      .catch(() => {
-        Swal.fire({
-          title: 'Oops!',
-          text: 'Something went wrong. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#e91e8c',
-        })
-      })
-      .finally(() => setLoading(false))
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
